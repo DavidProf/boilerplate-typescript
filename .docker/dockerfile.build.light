@@ -1,0 +1,22 @@
+# image around 126 MB
+# build step
+FROM mhart/alpine-node:14 as build
+
+COPY . build
+
+RUN cd build && \
+    yarn && \
+    yarn build && \
+    rm -rf node_modules && \
+    yarn --prod
+
+# application environment
+FROM mhart/alpine-node:14
+
+ENV PROJECT_NAME=/project
+
+WORKDIR $PROJECT_NAME
+
+COPY --from=build build $PROJECT_NAME
+
+CMD ["node", "dist/src/index.js"]
