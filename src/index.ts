@@ -5,7 +5,7 @@ import logger from './commons/logger'
         try {
             logger.info('initializing service')
 
-            setInterval(() => console.log('just logging'), 1000)
+            setInterval(() => logger.info('just logging'), 1000)
 
             logger.info('service initiated')
         } catch (e) {
