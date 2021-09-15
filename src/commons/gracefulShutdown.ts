@@ -5,12 +5,12 @@ import logger from './logger'
  * @param e
  */
 export const shutdown = async (
-    e: Error = new Error('shutdown')
+    e?: Error
 ): Promise<void> => {
-    logger.warn(`${process.env.APP_NAME}(${process.pid}) - graceful shutdown`, {
+    logger.warn(`${process.env.APP}(${process.pid}) - graceful shutdown`, {
         action: 'shutdown',
-        error: e.message,
-        stack: e.stack,
+        error: e?.message,
+        stack: e?.stack,
     })
     await new Promise((resolve) => setTimeout(() => resolve(0), 3000))
     process.exit(0)
