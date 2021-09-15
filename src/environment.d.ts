@@ -16,6 +16,10 @@ declare global {
              * enable logs in the local environment
              */
             LOGGER_SHOW_LOCAL: 'yes' | undefined
+            /**
+             * 
+             */
+            LOGGER_OUTPUT_TYPE: 'default' | 'json'
 
             // set undefined to force declaration here
             [key: string]: undefined
