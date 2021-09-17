@@ -1,6 +1,7 @@
 # image around 208 MB
 # build step
-FROM mhart/alpine-node:14 as build
+ARG IMAGE=mhart/alpine-node:16
+FROM $IMAGE as build
 
 WORKDIR build
 
@@ -13,7 +14,7 @@ COPY . .
 RUN yarn build
 
 # application environment
-FROM mhart/alpine-node:14
+FROM $IMAGE
 
 ARG PROJECT_NAME=/project
 
