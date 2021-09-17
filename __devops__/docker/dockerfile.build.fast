@@ -1,19 +1,21 @@
-# image around 126 MB
+# image around 208 MB
 # build step
 FROM mhart/alpine-node:14 as build
 
-COPY . build
+WORKDIR build
 
-RUN cd build && \
-    yarn && \
-    yarn build && \
-    rm -rf node_modules && \
-    yarn --prod
+COPY package.json .
+
+RUN yarn
+
+COPY . .
+
+RUN yarn build
 
 # application environment
 FROM mhart/alpine-node:14
 
-ENV PROJECT_NAME=/project
+ARG PROJECT_NAME=/project
 
 WORKDIR $PROJECT_NAME
 
