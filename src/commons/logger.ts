@@ -10,7 +10,7 @@ export const LOGGER_SHOW_LOCAL =
  */
 enum OUTPUT_TYPE {
     default,
-    json,
+    json
 }
 /**
  * the output type: json or text
@@ -81,9 +81,9 @@ const _logJSON = (
 const createLogFunction = (level: LogLevelName) => {
     return LOGGER_OUTPUT_TYPE !== OUTPUT_TYPE.json
         ? (message: LogMessage, ...args: LogArgs[]) =>
-            _log(level, message, ...args)
+              _log(level, message, ...args)
         : (message: LogMessage, ...args: LogArgs[]) =>
-            _logJSON(level, message, ...args)
+              _logJSON(level, message, ...args)
 }
 /**
  * logger helper

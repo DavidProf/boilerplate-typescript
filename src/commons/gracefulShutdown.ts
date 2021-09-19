@@ -17,7 +17,7 @@ export const shutdown = async (e?: Error): Promise<void> => {
  * add hooks/listeners to unhandled errors and exit signals
  * @returns {void}
  */
-const setHooks = () => {
+const setHooks = (): void => {
     process.on('SIGINT', () => shutdown())
     process.on('uncaughtException', (e: Error) => shutdown(e))
     process.on('unhandledRejection', (e: Error) => shutdown(e))
