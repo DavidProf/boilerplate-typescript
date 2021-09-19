@@ -1,9 +1,8 @@
 import Console from 'console'
-
 /**
  * boolean variable that inform if logs must show in the local environment
  */
-export let LOGGER_SHOW_LOCAL =
+export const LOGGER_SHOW_LOCAL =
     process.env.LOGGER_SHOW_LOCAL === 'yes' ||
     process.env.NODE_ENV === 'development'
 /**
@@ -11,12 +10,13 @@ export let LOGGER_SHOW_LOCAL =
  */
 enum OUTPUT_TYPE {
     default,
-    json
+    json,
 }
 /**
  * the output type: json or text
  */
-export let LOGGER_OUTPUT_TYPE: OUTPUT_TYPE = OUTPUT_TYPE[process.env.LOGGER_OUTPUT_TYPE]
+export const LOGGER_OUTPUT_TYPE: OUTPUT_TYPE =
+    OUTPUT_TYPE[process.env.LOGGER_OUTPUT_TYPE]
 /**
  * Log message Types
  */
@@ -32,13 +32,14 @@ const _logPrefix = {
     info: '[\x1b[92mINFO\x1b[0m]',
     warn: '[\x1b[33mWARN\x1b[0m]',
     error: '[\x1b[31mERROR\x1b[0m]',
-    debug: '[\x1b[95mDEBUG\x1b[0m]',
+    debug: '[\x1b[95mDEBUG\x1b[0m]'
 }
 /**
  * Log anything following the rules in config
- * @param level Log level name
- * @param message the principal message to log
- * @param args complemental args
+ * @param {LogLevelName} level Log level name
+ * @param {LogMessage} message the principal message to log
+ * @param {LogArgs} args complemental args
+ * @returns {void}
  */
 const _log = (level: LogLevelName, message: LogMessage, ...args: LogArgs[]) => {
     if (!LOGGER_SHOW_LOCAL) return
@@ -47,11 +48,16 @@ const _log = (level: LogLevelName, message: LogMessage, ...args: LogArgs[]) => {
 }
 /**
  * Log anything following the rules in config as JSON
- * @param level Log level name
- * @param message the principal message to log
- * @param args complemental args
+ * @param {LogLevelName} level Log level name
+ * @param {LogMessage} message the principal message to log
+ * @param {LogArgs} args complemental args
+ * @returns {void}
  */
-const _logJSON = (level: LogLevelName, message: LogMessage, ...args: LogArgs[]) => {
+const _logJSON = (
+    level: LogLevelName,
+    message: LogMessage,
+    ...args: LogArgs[]
+) => {
     if (!LOGGER_SHOW_LOCAL) return
 
     let composed = {}
@@ -59,19 +65,25 @@ const _logJSON = (level: LogLevelName, message: LogMessage, ...args: LogArgs[]) 
         composed = { ...composed, ...args[index] }
     }
 
-    Console[level](JSON.stringify({
-        level: [level], message, data: composed
-    }))
+    Console[level](
+        JSON.stringify({
+            level: [level],
+            message,
+            data: composed
+        })
+    )
 }
 /**
  * creates a log function
- * @param level log level name
- * @returns a log function
+ * @param {LogLevelName} level log level name
+ * @returns {Function} a log function
  */
 const createLogFunction = (level: LogLevelName) => {
     return LOGGER_OUTPUT_TYPE !== OUTPUT_TYPE.json
-        ? (message: LogMessage, ...args: LogArgs[]) => _log(level, message, ...args)
-        : (message: LogMessage, ...args: LogArgs[]) => _logJSON(level, message, ...args)
+        ? (message: LogMessage, ...args: LogArgs[]) =>
+            _log(level, message, ...args)
+        : (message: LogMessage, ...args: LogArgs[]) =>
+            _logJSON(level, message, ...args)
 }
 /**
  * logger helper
@@ -100,7 +112,7 @@ export const logger = {
      * @param message the principal message to log
      * @param args complemental args
      */
-    debug: createLogFunction('debug'),
+    debug: createLogFunction('debug')
 }
 
 export default logger

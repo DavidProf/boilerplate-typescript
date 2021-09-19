@@ -17,7 +17,7 @@ declare global {
              */
             LOGGER_SHOW_LOCAL: 'yes' | undefined
             /**
-             * 
+             *
              */
             LOGGER_OUTPUT_TYPE: 'default' | 'json'
 
