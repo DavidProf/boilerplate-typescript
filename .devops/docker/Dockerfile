@@ -11,7 +11,9 @@ RUN yarn
 
 COPY . .
 
-RUN yarn build && yarn --prod
+RUN yarn build && \
+    rm -rf node_modules && \
+    yarn --prod
 
 # application environment
 FROM $IMAGE
