@@ -1,4 +1,4 @@
-# image around 208 MB
+# image around 108 MB
 # build step
 ARG IMAGE=mhart/alpine-node:16
 FROM $IMAGE as build
@@ -11,15 +11,13 @@ RUN yarn
 
 COPY . .
 
-RUN yarn build
+RUN yarn build && yarn --prod
 
 # application environment
 FROM $IMAGE
 
-ARG PROJECT_NAME=/project
+WORKDIR /project
 
-WORKDIR $PROJECT_NAME
-
-COPY --from=build build $PROJECT_NAME
+COPY --from=build build /project
 
 CMD ["node", "dist/src/index.js"]
