@@ -67,7 +67,7 @@ const _logJSON = (
 
     Console[level](
         JSON.stringify({
-            level: [level],
+            level: level,
             message,
             data: composed
         })
