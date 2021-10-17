@@ -5,9 +5,9 @@
     "author": "David Lima",
     "license": "MIT",
     "scripts": {
-        "start:dev": "NODE_ENV=development && ts-node-dev --respawn --transpile-only src/index.ts",
-        "test": "NODE_ENV=test && jest",
-        "test:cov": "NODE_ENV=test && jest --coverage",
+        "start:dev": "export NODE_ENV=development && ts-node-dev --respawn --transpile-only src/index.ts",
+        "test": "export NODE_ENV=test && jest",
+        "test:cov": "export NODE_ENV=test && jest --coverage",
         "build": "rm -rf dist && tsc --build tsconfig.build.json",
         "lint": "eslint --fix --ext ts .",
         "commit": "cz"
