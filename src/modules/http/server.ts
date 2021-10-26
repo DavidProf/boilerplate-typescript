@@ -1,14 +1,14 @@
 import http from 'http'
 
-const bootstrapServer = () => {
+export const bootstrapServer = () => {
     const server = http.createServer()
 
     server.on('request', (req, res) => {
         res.setHeader('content-type', 'application/json')
         res.end({ ok: true })
     })
-    
+
     server.on('listening', () => console.log('server running'))
-    
-    server.listen(3141)    
+
+    server.listen(3141)
 }
