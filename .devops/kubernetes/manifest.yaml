@@ -1,6 +1,6 @@
 # you can use envsubst as the following to generate the final manifest
 # export APP=myappname
-# envsubst < .kubernates/manifest.yaml > manifest.yaml
+# envsubst < .devops/kubernetes/manifest.yaml > manifest.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
