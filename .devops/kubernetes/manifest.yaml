@@ -1,24 +1,89 @@
 # you can use envsubst as the following to generate the final manifest
 # export APP=myappname
 # envsubst < .devops/kubernetes/manifest.yaml > manifest.yaml
-apiVersion: apps/v1
-kind: Deployment
+kind: Ingress
+apiVersion: networking.k8s.io/v1
 metadata:
-    name: $APP
+    namespace: production
+    name: ci-test
+    annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+    rules:
+        - host: localhost
+          http:
+              paths:
+                  - pathType: Prefix
+                    path: '/v1/(.*)'
+                    backend:
+                        service:
+                            name: ci-test
+                            port:
+                                number: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+    namespace: production
+    name: ci-test
+spec:
+    selector:
+        app: ci-test
+    ports:
+        - port: 80
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    namespace: production
+    name: ci-test
     labels:
-        app: $APP
+        app: ci-test
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: $APP
+            app: ci-test
     template:
         metadata:
             labels:
-                app: $APP
+                app: ci-test
         spec:
             containers:
-                - name: $APP
-                  image: $IMAGE
+                - name: ci-test
+                  image: sowenproject/ci-test:latest
+                  resources:
+                      requests:
+                          memory: 20Mi
+                      limits:
+                          memory: 50Mi
                   ports:
-                      - containerPort: 80
+                      - name: http
+                        containerPort: 80
+                  envFrom:
+                      - secretRef:
+                            name: ci-test
+                  startupProbe:
+                      initialDelaySeconds: 3
+                      timeoutSeconds: 3
+                      successThreshold: 1
+                      failureThreshold: 2
+                      httpGet:
+                          path: /ping
+                          port: http
+                  readinessProbe:
+                      initialDelaySeconds: 3
+                      timeoutSeconds: 3
+                      successThreshold: 1
+                      failureThreshold: 2
+                      httpGet:
+                          path: /ping
+                          port: http
+                  livenessProbe:
+                      initialDelaySeconds: 3
+                      timeoutSeconds: 3
+                      successThreshold: 1
+                      failureThreshold: 2
+                      httpGet:
+                          path: /ping
+                          port: http
