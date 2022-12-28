@@ -7,13 +7,12 @@ WORKDIR build
 
 COPY package.json .
 
-RUN yarn
+RUN npm i
 
 COPY . .
 
-RUN yarn build && \
-    rm -rf node_modules && \
-    yarn --prod
+RUN npm run build && \
+    npm i --production
 
 # application environment
 FROM $IMAGE
